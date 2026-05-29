@@ -16,14 +16,23 @@ export function ReservationPage() {
 
   // Operating hours
   const operatingHours = [
-    '5:00 PM', '5:30 PM', '6:00 PM', '6:30 PM', '7:00 PM', '7:30 PM',
-    '8:00 PM', '8:30 PM', '9:00 PM', '9:30 PM', '10:00 PM', '10:30 PM',
-    '11:00 PM', '11:30 PM', '12:00 AM', '12:30 AM', '1:00 AM', '1:30 AM', '2:00 AM'
+    '17:00', '17:30', '18:00', '18:30', '19:00', '19:30',
+    '20:00', '20:30', '21:00', '21:30', '22:00', '22:30',
+    '23:00', '23:30', '00:00', '00:30', '01:00', '01:30', '02:00'
   ];
+
+  // Convert 24h to 12h format
+  const formatTo12Hour = (time24: string) => {
+    const [hours, minutes] = time24.split(':');
+    const hour = parseInt(hours, 10);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const hour12 = hour % 12 || 12;
+    return `${hour12}:${minutes} ${ampm}`;
+  };
 
   const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const numbers = e.target.value.replace(/\D/g, '');
-    setIdNumber(numbers);
+    setIdNumber(numbers.slice(0, 9));
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -205,7 +214,7 @@ export function ReservationPage() {
               <option value="">Seleccione una hora</option>
               {operatingHours.map((time) => (
                 <option key={time} value={time}>
-                  {time}
+                  {formatTo12Hour(time)}
                 </option>
               ))}
             </select>
